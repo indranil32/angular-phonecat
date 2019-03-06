@@ -1,0 +1,63 @@
+<div ng-repeat="plainSchema in $ctrl.groupSchema track by $index" class="container-fluid">
+	<label for="plainSchema.key" class="row">{{plainSchema.key}}
+	  <span ng-if="plainSchema.mandatoryCondition === 'true'">*</span>
+	</label>
+    <div ng-if="!plainSchema.multivalue">
+    	<div ng-switch="plainSchema.type" >
+			<div ng-switch-when="String">
+				<input	ng-if="plainSchema.key.indexOf('_Selected') === -1" 	
+					type="text" 
+					ng-model="$ctrl.user.plainAttrs[plainSchema.key].values[0]" 
+					ng-required="{{plainSchema.mandatoryCondition}}" validate="true"
+					ng-disabled="plainSchema.readonly" 
+					name="{{plainSchema.key}}"
+					class="row" /> 
+				
+				<select ng-if="plainSchema.key.indexOf('_Selected') != -1" 
+						ng-model="$ctrl.user.plainAttrs[plainSchema.key].values[0]"
+						ng-required="{{plainSchema.mandatoryCondition}}" validate="true"
+						ng-disabled="plainSchema.readonly" 
+						ng-options="itemList.key as itemList.content for itemList in $ctrl.availableOptions[plainSchema.key.split('_')[0]+'s']" 
+						name="{{plainSchema.key}}"
+						class="row" ng-dropdown ng-change="$ctrl.changeme(plainSchema.key)">
+					<option ng-option value="">Please Select...</option>
+				</select>
+				
+				<div class="phones"  ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-stripe' || $ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-paypal-express'">
+		          	<form action="http://35.227.67.37:4567/charge" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-stripe'" class="row">
+						<input type="hidden" name="externalKey" value="{{user.username}}" />
+						<br/>
+						<script src="https://checkout.stripe.com/v3/checkout.js" class="stripe-button" data-key="pk_test_CmztJP46fhZLqKzLJGzRhfwC"></script>
+					</form>
+					<form target="_blank" action="{{$ctrl.trustSrc($ctrl.user.killbillConfig.paypalURL)}}" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-paypal-express'" class="row">
+
+					  <!-- Identify your business so that you can collect the payments. -->
+					  <input type="hidden" name="business" value="{{$ctrl.user.killbillConfig.paypalBusinessAccount}}">
+					  <!-- Specify details about the item that buyers will purchase. -->
+					  <input type="hidden" name="item_name" value="{{$ctrl.user.paypal.name}}" />
+					  <input type="hidden" name="amount" value="{{$ctrl.user.paypal.price}}"/>
+					  <input type="hidden" name="currency_code" value="{{$ctrl.user.paypal.currency}}"/>
+					  <input type="hidden" name="hosted_button_id" value="JYBZWMD7U6XVE">
+					  <!-- Specify a Buy Now button. -->
+					  <input type="hidden" name="cmd" value="_xclick">
+						
+					  <br/>	
+					  <!-- Display the payment button. -->
+					  <input type="image" name="submit" border="0" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif"   alt="PayPal - The safer, easier way to pay online!"/>
+					  <!-- 
+					  <input type="image" 
+					            src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_subscribeCC_LG.gif" 
+					            border="0" name="submit" 
+					            alt="PayPal — The safer, easier way to pay online." 
+					            style="border:none;padding:0;height:auto;width:auto">					            
+					   -->
+					  <img alt="" border="0" width="1" height="1" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" />
+					
+					</form>
+			    </div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
