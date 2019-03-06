@@ -24,36 +24,52 @@
 				</select>
 				
 				<div class="phones"  ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-stripe' || $ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-paypal-express'">
-		          	<form action="http://35.227.67.37:4567/charge" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-stripe'" class="row">
-						<input type="hidden" name="externalKey" value="{{user.username}}" />
-						<br/>
-						<script src="https://checkout.stripe.com/v3/checkout.js" class="stripe-button" data-key="pk_test_CmztJP46fhZLqKzLJGzRhfwC"></script>
-					</form>
-					<form target="_blank" action="{{$ctrl.trustSrc($ctrl.user.killbillConfig.paypalURL)}}" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-paypal-express'" class="row">
-
-					  <!-- Identify your business so that you can collect the payments. -->
-					  <input type="hidden" name="business" value="{{$ctrl.user.killbillConfig.paypalBusinessAccount}}">
-					  <!-- Specify details about the item that buyers will purchase. -->
-					  <input type="hidden" name="item_name" value="{{$ctrl.user.paypal.name}}" />
-					  <input type="hidden" name="amount" value="{{$ctrl.user.paypal.price}}"/>
-					  <input type="hidden" name="currency_code" value="{{$ctrl.user.paypal.currency}}"/>
-					  <input type="hidden" name="hosted_button_id" value="JYBZWMD7U6XVE">
-					  <!-- Specify a Buy Now button. -->
-					  <input type="hidden" name="cmd" value="_xclick">
-						
-					  <br/>	
-					  <!-- Display the payment button. -->
-					  <input type="image" name="submit" border="0" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif"   alt="PayPal - The safer, easier way to pay online!"/>
-					  <!-- 
-					  <input type="image" 
-					            src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_subscribeCC_LG.gif" 
-					            border="0" name="submit" 
-					            alt="PayPal — The safer, easier way to pay online." 
-					            style="border:none;padding:0;height:auto;width:auto">					            
-					   -->
-					  <img alt="" border="0" width="1" height="1" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" />
+		          	<!-- Stripe -->
 					
+					<form target="_blank" action="{{$ctrl.trustSrc($ctrl.user.killbillConfig.stripeURL)}}" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-stripe'" class="row">
+						
+						<input type="hidden" name="name" value="{{$ctrl.user.name.values[0]}}">
+					    <input type="hidden" name="email" value="{{$ctrl.user.email.values[0]}}">
+					    <input type="hidden" name="externalKey" value="{{$ctrl.user.email.values[0]}}">
+					    <input type="hidden" name="currency" value="{{$ctrl.user.currency.values[0]}}">
+					    <input type="hidden" name="address" value="{{$ctrl.user.address.values[0]}}">
+					    <input type="hidden" name="postalCode" value="{{$ctrl.user.postalCode.values[0]}}">
+					    <input type="hidden" name="company" value="{{$ctrl.user.company.values[0]}}">
+					    <input type="hidden" name="city" value="{{$ctrl.user.city.values[0]}}">
+					    <input type="hidden" name="state" value="{{$ctrl.user.state.values[0]}}">
+					    <input type="hidden" name="country" value="{{$ctrl.user.country.values[0]}}">
+					    <input type="hidden" name="phone" value="{{$ctrl.user.phone.values[0]}}">
+					    
+					    <input type="hidden" name="package" value="{{$ctrl.user.pkgName.values[0]}}">
+					    <input type="hidden" name="price" value="{{$ctrl.user.price.values[0]}}">
+						
+						<br/>
+						<script src="https://checkout.stripe.com/v3/checkout.js" class="stripe-button" data-key="{{$ctrl.user.killbillConfig.stripePublicKey}}"></script>
 					</form>
+					
+					<!-- Paypal -->
+					<form target="_blank" action="{{$ctrl.trustSrc($ctrl.user.killbillConfig.paypalURL)}}" method="post" ng-if="$ctrl.user.plainAttrs[plainSchema.key].values[0] == 'killbill-paypal-express'" class="row">
+						
+						<input type="hidden" name="name" value="{{$ctrl.user.plainAttrs['name'].values[0]}}">
+					    <input type="hidden" name="email" value="{{$ctrl.user.plainAttrs['email'].values[0]}}">
+					    <input type="hidden" name="externalKey" value="{{$ctrl.user.plainAttrs['email'].values[0]}}">
+					    <input type="hidden" name="currency" value="{{$ctrl.user.plainAttrs['currency_Selected'].values[0]}}">
+					    <input type="hidden" name="address" value="{{$ctrl.user.plainAttrs['address'].values[0]}}">
+					    <input type="hidden" name="postalCode" value="{{$ctrl.user.plainAttrs['postalCode'].values[0]}}">
+					    <input type="hidden" name="company" value="{{$ctrl.user.plainAttrs['company'].values[0]}}">
+					    <input type="hidden" name="city" value="{{$ctrl.user.plainAttrs['city'].values[0]}}">
+					    <input type="hidden" name="state" value="{{$ctrl.user.plainAttrs['state'].values[0]}}">
+					    <input type="hidden" name="country" value="{{$ctrl.user.plainAttrs['country'].values[0]}}">
+					    <input type="hidden" name="phone" value="{{$ctrl.user.plainAttrs['phone'].values[0]}}">
+					    
+					    <input type="hidden" name="package" value="{{$ctrl.user.plainAttrs['basePackage_Selected'].values[0]}}">
+					    <input type="hidden" name="price" value="{{$ctrl.user.plainAttrs.amount.values[0]}}">
+						
+						<br/>
+						<input type="image" name="submit" border="0" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif"   alt="PayPal - The safer, easier way to pay online!"/>
+						<img alt="" border="0" width="1" height="1" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" />
+					</form>
+					
 			    </div>
 				
 			</div>
